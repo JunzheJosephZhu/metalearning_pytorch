@@ -44,4 +44,4 @@ def run_session(experiment, agent, optimizer, session_num, train = True, bv = 0.
     actions = actions.numpy()
     rewards = np.array(rewards)
     print('session:', session_num, 'reward:', sum(rewards)/len(rewards))
-    return actions, rewards
+    return actions, rewards, value_preds.cpu().detach().numpy()
