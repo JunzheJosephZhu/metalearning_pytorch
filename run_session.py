@@ -7,11 +7,10 @@ import numpy as np
 from utils import discount
 device = 0
 
-def run_session(experiment, agent, optimizer, session_num, train = True, bv = 0.05, be = 0.05, discount_f = 0.75):
+def run_session(experiment, agent, optimizer, session_num, lstm_state = None, train = True, bv = 0.05, be = 0.05, discount_f = 0.75):
     be = max(0.05*(20-session_num/1000), be) # input argument be is lower threshold
     action = -1
     reward = 0.25 # this is an arbitrary number for the initial input
-    lstm_state = None
     value_preds = []
     rewards = []
     actions = []
