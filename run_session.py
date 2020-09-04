@@ -7,7 +7,7 @@ import numpy as np
 from utils import discount
 device = 0
 
-def run_session(experiment, agent, optimizer, session_num, lstm_state = None, train = True, bv = 0.05, be = 0.05, discount_f = 0.75):
+def run_session(experiment, agent, optimizer, session_num, lstm_state = None, train = True, bv = 0.05, be = 0.05, discount_f = 0.75, suppress_index=[]):
     be = max(0.05*(20-session_num/1000), be) # input argument be is lower threshold
     action = -1
     reward = 0.25 # this is an arbitrary number for the initial input
@@ -19,7 +19,11 @@ def run_session(experiment, agent, optimizer, session_num, lstm_state = None, tr
     for press_num in range(experiment.num_presses):
         action_probs, value_pred, lstm_state = agent(action, reward, lstm_state)
         agent.activ_hist.append(lstm_state[1][0].detach().cpu().numpy())
-        action = np.random.choice([0, 1], p = action_probs.detach().cpu().numpy().flatten())
+        if suppress_index != []:
+            for idx in suppress_index:
+                lstm_state[1][0][idx] = 0.0
+        action = torch.multinomial(action_probs.detach().cpu(), 1)[0].item() 
+        #action = np.random.choice([0, 1], p = action_probs.detach().cpu().numpy().flatten())
         reward = experiment.pull(action)
         policies.append(action_probs)
         value_preds.append(value_pred)
