@@ -79,8 +79,9 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     random.seed(0)
     agent = A3C().cuda(0)
+    agent.load_state_dict(torch.load('per_trial_model/models/cont1x.pth', map_location=torch.device('cuda: 0')))
     optimizer = torch.optim.Adam(agent.parameters(), lr=0.0007)
-    for i in tqdm(range(10000)):
+    for i in tqdm(range(1)):
         experiment = experiment1(0)
         blocks = run_session(experiment, agent, optimizer, suppress_idx=[])
     experiment = experiment1(0)
