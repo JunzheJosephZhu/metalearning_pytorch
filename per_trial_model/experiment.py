@@ -73,14 +73,19 @@ class experiment1():
         return reward, cost
     
     def reset(self):
+        # 3 is test type, rotated between block types
         self.blocks[-1]['ed'] = self.current_trial
         if self.total_reward < self.max_reward:
             session_type_map = {0: ['cont1x'],
                     1: ['cont1x', 'cont2x'],
                     2: ['cont1x', 'disc1x'],
-                    3: ['cont1x', 'cont2x', 'disc1x', 'disc2x']}
+                    3: ['cont1x, disc1x, cont1x, cont2x, cont1x, disc2x']}
             block_type_choices = session_type_map[self.session_type]
-            self.blocks.append({'type': random.choice(block_type_choices)})
+            if self.session_type != 3:
+                self.blocks.append({'type': random.choice(block_type_choices)})
+            else:
+                current_index = len(self.blocks) % len(block_type_choices)
+                self.blocks.append({'type': block_type_choices[current_index]})
             self.PR_tally = 0
             self.consecutive_PR = 0
             self.consecutive_FR = 0
