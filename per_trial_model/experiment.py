@@ -46,6 +46,7 @@ class experiment1():
         elif block_type == 'disc2x':
             PR_cost_schedule = np.arange(1, 200)[::4].repeat(2, axis=0)
         else:
+            print(f"{block_type} doesn't exist!")
             raise ValueError
         if action == 0:
             reward = self.PR_reward
@@ -59,6 +60,7 @@ class experiment1():
             self.consecutive_PR = 0
             self.consecutive_FR += 1
         else:
+            print(f"{action} doesn't exist!")
             raise ValueError
         if 'st' not in current_block:
             if self.consecutive_PR == 4:
@@ -79,7 +81,7 @@ class experiment1():
             session_type_map = {0: ['cont1x'],
                     1: ['cont1x', 'cont2x'],
                     2: ['cont1x', 'disc1x'],
-                    3: ['cont1x, disc1x, cont1x, cont2x, cont1x, disc2x']}
+                    3: ['cont1x', 'disc1x', 'cont1x', 'cont2x', 'cont1x', 'disc2x']}
             block_type_choices = session_type_map[self.session_type]
             if self.session_type != 3:
                 self.blocks.append({'type': random.choice(block_type_choices)})
