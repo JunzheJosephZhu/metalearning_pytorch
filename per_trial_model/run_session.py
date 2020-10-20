@@ -59,16 +59,17 @@ def run_session(experiment, agent, optimizer, lstm_init = None, train = True, bv
     actions = actions.numpy()
     value_preds = value_preds.detach().cpu().numpy()
     activ_hist = activ_hist.detach().cpu().numpy()
-    for block in experiment.blocks:
+    for i, block in enumerate(experiment.blocks):
         st = block['st']
-        ed = block['ed']
-        block['actions'] = actions[st:ed+1]
-        block['rewards'] = rewards[st:ed+1]
-        block['costs'] = costs[st:ed+1]
-        block['value_preds'] = value_preds[st:ed+1]
-        block['activ'] = activ_hist[st:ed+1]
+        # ed = block['ed'] + 1
+        ed = experiment.blocks[i + 1]['st'] if i + 1 < len(experiment.blocks) else len(actions)
+        block['actions'] = actions[st:ed]
+        block['rewards'] = rewards[st:ed]
+        block['costs'] = costs[st:ed]
+        block['value_preds'] = value_preds[st:ed]
+        block['activ'] = activ_hist[st:ed]
 
-    return experiment.blocks
+    return experiment.blocks, actions, activ_hist
 
 if __name__ == "__main__":
     from experiment import experiment1
@@ -79,12 +80,15 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     random.seed(0)
     agent = A3C().cuda(0)
-    agent.load_state_dict(torch.load('per_trial_model/models/cont1x.pth', map_location=torch.device('cuda: 0')))
+    agent.load_state_dict(torch.load('experiment/config1/models/stage2.pth', map_location=torch.device('cuda: 0'))['state_dict'])
     optimizer = torch.optim.Adam(agent.parameters(), lr=0.0007)
     for i in tqdm(range(1)):
         experiment = experiment1(0)
-        blocks = run_session(experiment, agent, optimizer, suppress_idx=[])
-    experiment = experiment1(0)
-    blocks = run_session(experiment, agent, optimizer, train=False, suppress_idx=[0, 1])
+        blocks, actions, activ = run_session(experiment, agent, optimizer, suppress_idx=[])
+    experiment = experiment1(3)
+    blocks, actions, activ = run_session(experiment, agent, optimizer, train=False, suppress_idx=[])
+    print(len(actions))
     for block in blocks:
+        print(block['type'])
         print(block['actions'])
+        print(block['costs'])

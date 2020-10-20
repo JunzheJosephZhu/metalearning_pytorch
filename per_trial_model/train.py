@@ -9,6 +9,7 @@ import argparse
 import json5
 from pathlib import Path
 import time
+import pickle
 
 torch.manual_seed(0)
 random.seed(0)
@@ -51,7 +52,7 @@ else:
     start_session = 0
 for i in tqdm(range(start_session, 15000)):
     experiment = experiment1(0)
-    blocks = run_session(experiment, agent, optimizer, suppress_idx=[], **configuration)
+    blocks, _, _ = run_session(experiment, agent, optimizer, suppress_idx=[], **configuration)
     if i % 100 == 99:
         torch.save({'state_dict':agent.state_dict(), 'train_session':i + 1}, model_dir / 'cont1x.pth')
 
@@ -69,18 +70,23 @@ for i in tqdm(range(start_session, 15000)):
         experiment = experiment1(1)
     else:
         experiment = experiment1(2)
-    blocks = run_session(experiment, agent, optimizer, suppress_idx=[], **configuration)
+    blocks, _, _ = run_session(experiment, agent, optimizer, suppress_idx=[], **configuration)
     if i % 100 == 99:
         torch.save({'state_dict':agent.state_dict(), 'train_session':i + 1}, model_dir / 'stage2.pth')
 
 
 # test agent
 experiment = experiment1(3)
-blocks = run_session(experiment, agent, optimizer, train=False, suppress_idx=[], **configuration)
+blocks, _, _ = run_session(experiment, agent, optimizer, train=False, suppress_idx=[], **configuration)
 with open(experiment_dir / f"{date}.txt", "w+") as handle:
     for block in blocks:
         print(block['type'], block['actions'])
-        handle.write(block['type'] + str(block['actions']) + '\n')
-    # print(block['rewards'], block['costs'])
+        handle.write(block['type'] + "\n")
+        handle.write(str(block['actions']).replace("\n", "") + "\n")
+        handle.write(str(block['rewards']).replace("\n", "") + "\n")
+        handle.write(str(block['costs']).replace("\n", "") + "\n")
 
+    # print(block['rewards'], block['costs'])
+with open(experiment_dir / f"{date}.pkl", "wb") as handle:
+    pickle.dump(blocks, handle)
 print(list(agent.parameters())[0])
