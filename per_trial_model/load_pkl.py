@@ -1,6 +1,6 @@
 import pickle
 filename = "/home/joseph/Desktop/metalearning_pytorch/experiment/debug/2020-10-14-01-56-28.pkl"
-def load_blocks(file):
+def load_blocks(filename):
     with open(filename, 'rb') as file:
         blocks = pickle.load(file)
     return blocks

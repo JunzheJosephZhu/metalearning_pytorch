@@ -5,7 +5,7 @@ from sklearn.linear_model import LogisticRegression, LinearRegression
 import numpy as np
 import matplotlib.pyplot as plt
 
-filename = "/home/joseph/Desktop/metalearning_pytorch/experiment/debug/2020-10-14-01-56-28.pkl"
+filename = "/home/joseph/Desktop/metalearning_pytorch/experiment/config8/2020-10-23-04-37-52.pkl"
 blocks = load_blocks(filename)
 
 # First experiment: Neural activation -> action, reward, cost, reward / cost
@@ -59,7 +59,7 @@ plt.ylabel("coefficient for above regression")
 
 plt.subplot(246)
 weights = model2.coef_
-order = np.argsort(weights)
+# order = np.argsort(weights)
 plt.scatter(np.arange(len(weights)), weights[order])
 plt.xticks(ticks=np.arange(len(weights)), labels=order, fontsize=6)
 plt.xlabel("neuron idx")
@@ -67,7 +67,7 @@ plt.ylabel("coefficient for above regression")
 
 plt.subplot(247)
 weights = model3.coef_
-order = np.argsort(weights)
+# order = np.argsort(weights)
 plt.scatter(np.arange(len(weights)), weights[order])
 plt.xticks(ticks=np.arange(len(weights)), labels=order, fontsize=6)
 plt.xlabel("neuron idx")
@@ -75,7 +75,7 @@ plt.ylabel("coefficient for above regression")
 
 plt.subplot(248)
 weights = model4.coef_
-order = np.argsort(weights)
+# order = np.argsort(weights)
 plt.scatter(np.arange(len(weights)), weights[order])
 plt.xticks(ticks=np.arange(len(weights)), labels=order, fontsize=6)
 plt.xlabel("neuron idx")

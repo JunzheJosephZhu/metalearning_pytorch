@@ -5,7 +5,7 @@ from sklearn.linear_model import LogisticRegression
 import numpy as np
 import matplotlib.pyplot as plt
 
-filename = "/home/joseph/Desktop/metalearning_pytorch/experiment/debug/2020-10-14-01-56-28.pkl"
+filename = "/home/joseph/Desktop/metalearning_pytorch/experiment/config8/2020-10-23-04-37-52.pkl"
 blocks = load_blocks(filename)
 
 # First experiment: PR cost, PR reward, FR cost, FR reward -> action
@@ -34,12 +34,12 @@ plt.xlabel(f"regression with past {recep_field} PR cost & FR cost & PR reward & 
 plt.subplot(122)
 x_base = np.arange(recep_field) * 2
 weights = model.coef_[0]
-plt.bar(x_base, height=weights[0: recep_field], width=0.25)
-plt.bar(x_base + 0.25, height=weights[recep_field: recep_field * 2], width=0.25)
-plt.bar(x_base + 0.5, height=weights[recep_field * 2: recep_field * 3], width=0.25)
-plt.bar(x_base + 0.75, height=weights[recep_field * 3: recep_field * 4], width=0.25)
+plt.bar(x_base, height=weights[0: recep_field][::-1], width=0.25)
+plt.bar(x_base + 0.25, height=weights[recep_field: recep_field * 2][::-1], width=0.25)
+plt.bar(x_base + 0.5, height=weights[recep_field * 2: recep_field * 3][::-1], width=0.25)
+plt.bar(x_base + 0.75, height=weights[recep_field * 3: recep_field * 4][::-1], width=0.25)
 plt.legend(['PR cost', 'PR reward', 'FR cost', 'FR reward'], fontsize=30)
-plt.xlabel('# trials from current predicted trial', fontsize=30)
+plt.xlabel('# trials from current predicted trial, left is more recent', fontsize=30)
 plt.ylabel('weights', fontsize=30)
 
 plt.savefig('plots/reg1_1.png')

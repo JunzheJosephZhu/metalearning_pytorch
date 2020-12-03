@@ -15,6 +15,6 @@
     1. plot the weights for 1.4
     2. a variant of 1.4 where the inputs are only the hidden PR cost
     3. Neuron -> current PR cost
-    4. for 1.3, fix x axis of neuron plots based on first behavioral feature\
-    5. for 1.1 and 1.2 right plot, make right more recent
+    - [x] for 1.3, fix x axis of neuron plots based on first behavioral feature
+    - [x]. for 1.1 and 1.2 right plot, make right more recent
 - Current best model is config8, discount factor=0.7, bv=0.05

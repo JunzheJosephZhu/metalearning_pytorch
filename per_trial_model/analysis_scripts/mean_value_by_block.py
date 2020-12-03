@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns; sns.set_theme(color_codes=True)
 import pandas as pd
 
-filename = "/home/joseph/Desktop/metalearning_pytorch/experiment/debug/2020-10-14-01-56-28.pkl"
+filename = "/home/joseph/Desktop/metalearning_pytorch/experiment/config8/2020-10-23-04-37-52.pkl"
 blocks = load_blocks(filename)
 
 with open('plots/mean_value_by_block.txt', 'w+') as handle:
